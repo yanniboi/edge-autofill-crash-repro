@@ -17,8 +17,10 @@
         inside the form, so this crashes like case 1.
       </p>
       <p>
-        Add <code>?no-select=1</code> to the URL to render the form without the
-        Radix dropdown as a control.
+        Add <code>?no-select=1</code> to render the form without the Radix
+        dropdown as a control, or <code>?container=1</code> for case 5, which
+        puts a <code>container-type: inline-size</code> container query on the
+        form.
       </p>
 
       <div id="root"></div>
@@ -92,14 +94,19 @@
 
       function App() {
         const [country, setCountry] = React.useState('GB')
-        const showSelect =
-          new URLSearchParams(window.location.search).get('no-select') !== '1'
+        const params = new URLSearchParams(window.location.search)
+        const showSelect = params.get('no-select') !== '1'
+        // Case 5: a container query on the form, as a Tailwind @container class does.
+        const style = params.get('container') === '1'
+          ? { containerType: 'inline-size' }
+          : undefined
 
         return h(
           'form',
           {
             method: 'post',
             action: './index.html',
+            style,
             onSubmit: (event) => event.preventDefault(),
           },
           FIELDS.map(([label, name, autoComplete]) =>

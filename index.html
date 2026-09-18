@@ -127,8 +127,9 @@
       <p>
         Minimal reproduction of a renderer crash
         (<code>STATUS_ACCESS_VIOLATION</code>) in Microsoft Edge 153 on Windows.
-        Using browser address autofill on a form that contains a visually
-        hidden native <code>&lt;select&gt;</code> crashes the tab.
+        The tab crashes when browser address autofill fills a form containing a
+        visually hidden native <code>&lt;select&gt;</code> inside a CSS
+        container query.
       </p>
 
       <h2>Before you start</h2>
@@ -157,12 +158,25 @@
           </a>
         </li>
         <li>
+          <a class="case" href="./native-container.html">
+            <span class="tag crash">Suspected</span>
+            <strong>4. Hidden select inside a container query</strong>
+            <span
+              >Case 1 plus <code>container-type: inline-size</code> on the
+              form, which is what a Tailwind <code>@container</code> class
+              does.</span
+            >
+          </a>
+        </li>
+        <li>
           <a class="case" href="./radix.html">
-            <span class="tag crash">Crashes</span>
+            <span class="tag">Control</span>
             <strong>3. Radix UI Select</strong>
             <span
               >React plus <code>@radix-ui/react-select</code>, which renders
-              that hidden <code>&lt;select&gt;</code> itself.</span
+              that hidden <code>&lt;select&gt;</code> itself. Add
+              <code>?container=1</code> for case 5: the same page with a
+              container query on the form.</span
             >
           </a>
         </li>
@@ -170,8 +184,15 @@
 
       <h2>What we see</h2>
       <ul>
-        <li>Cases 1 and 3 crash the tab, on hover alone in some cases.</li>
-        <li>Case 2 fills the form normally.</li>
+        <li>
+          Cases 1, 2 and 3 fill the form normally in Edge 153. The hidden
+          <code>&lt;select&gt;</code> alone is not enough to crash the tab.
+        </li>
+        <li>
+          Case 4 adds the container query, which is the difference from the
+          site where the crash was first seen. Try it and cases 3 and 5 to see
+          which combination crashes.
+        </li>
         <li>Chrome 153 is unaffected in all three cases.</li>
       </ul>
 

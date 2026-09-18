@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="data:," />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Case 4: Container Query</title>
+    <link rel="stylesheet" href="./form.css" />
+    <style>
+      /* The only difference from case 1. */
+      form {
+        container-type: inline-size;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Case 4: hidden <code>&lt;select&gt;</code> inside a container query</h1>
+      <p>Case 1 with one CSS declaration added to the form: <code>container-type: inline-size</code>. That makes the form the containing block for the absolutely positioned hidden <code>&lt;select&gt;</code>.</p>
+
+      <form method="post" action="./index.html">
+        <label>
+          Full name
+          <input name="name" autocomplete="name" />
+        </label>
+
+        <label>
+          Address line 1
+          <input name="address-line1" autocomplete="address-line1" />
+        </label>
+
+        <label>
+          Town / city
+          <input name="city" autocomplete="address-level2" />
+        </label>
+
+        <label>
+          Postcode
+          <input name="postcode" autocomplete="postal-code" />
+        </label>
+
+        <!--
+          This is the crash trigger: a native select, visually hidden exactly as
+          Radix UI hides it, inside the same form. Nothing else on the page is
+          unusual, and there is no JavaScript at all.
+        -->
+        <select class="visually-hidden" aria-hidden="true" tabindex="-1" name="country" autocomplete="country">
+          <option value="GB">United Kingdom</option>
+          <option value="US">United States</option>
+          <option value="DE">Germany</option>
+          <option value="FR">France</option>
+          <option value="ES">Spain</option>
+          <option value="IT">Italy</option>
+          <option value="NL">Netherlands</option>
+          <option value="SE">Sweden</option>
+          <option value="SG">Singapore</option>
+          <option value="JP">Japan</option>
+          <option value="AU">Australia</option>
+          <option value="CA">Canada</option>
+        </select>
+
+        <button type="submit">Save address</button>
+      </form>
+
+      <p class="note">No JavaScript, no libraries, no framework. This mirrors a Tailwind <code>@container</code> on the form. <a href="./index.html">All cases</a></p>
+    </main>
+  </body>
+</html>

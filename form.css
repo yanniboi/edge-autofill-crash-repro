@@ -1,0 +1,147 @@
+:root {
+  --bg: #ffffff;
+  --fg: #16181d;
+  --muted: #5b6270;
+  --line: #d9dde5;
+  --accent: #b4332c;
+  --card: #f6f7f9;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #14161a;
+    --fg: #e9ecf1;
+    --muted: #a2aab8;
+    --line: #2c313a;
+    --accent: #ff8177;
+    --card: #1b1e24;
+  }
+}
+:root[data-theme='dark'] {
+  --bg: #14161a;
+  --fg: #e9ecf1;
+  --muted: #a2aab8;
+  --line: #2c313a;
+  --accent: #ff8177;
+  --card: #1b1e24;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 48px 16px 96px;
+  background: var(--bg);
+  color: var(--fg);
+  font:
+    16px/1.6 system-ui,
+    -apple-system,
+    Segoe UI,
+    sans-serif;
+}
+main {
+  max-width: 520px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 24px;
+  line-height: 1.3;
+  margin: 0 0 8px;
+}
+p {
+  color: var(--muted);
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+a {
+  color: var(--accent);
+}
+form {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+label {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+input,
+button,
+select:not([aria-hidden='true']) {
+  font: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+input:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+button[type='submit'] {
+  justify-self: start;
+  background: var(--card);
+  cursor: pointer;
+}
+/* Exactly how Radix UI hides its native select (VisuallyHidden). */
+.visually-hidden {
+  position: absolute;
+  border: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  word-wrap: normal;
+}
+.note {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--muted);
+}
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  font: inherit;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.content {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.14);
+  padding: 4px;
+  max-height: 260px;
+  overflow: auto;
+  z-index: 10;
+}
+.item {
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+}
+.item[data-highlighted] {
+  background: var(--card);
+}

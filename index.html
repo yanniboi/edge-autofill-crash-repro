@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="data:," />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Edge Autofill Crash</title>
+    <style>
+      :root {
+        --bg: #ffffff;
+        --fg: #16181d;
+        --muted: #5b6270;
+        --line: #d9dde5;
+        --accent: #b4332c;
+        --card: #f6f7f9;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) {
+          --bg: #14161a;
+          --fg: #e9ecf1;
+          --muted: #a2aab8;
+          --line: #2c313a;
+          --accent: #ff8177;
+          --card: #1b1e24;
+        }
+      }
+      :root[data-theme='dark'] {
+        --bg: #14161a;
+        --fg: #e9ecf1;
+        --muted: #a2aab8;
+        --line: #2c313a;
+        --accent: #ff8177;
+        --card: #1b1e24;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 48px 16px 96px;
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          16px/1.6 system-ui,
+          -apple-system,
+          Segoe UI,
+          sans-serif;
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 28px;
+        line-height: 1.25;
+        margin: 0 0 8px;
+      }
+      h2 {
+        font-size: 18px;
+        margin: 40px 0 8px;
+      }
+      p,
+      li {
+        color: var(--muted);
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.9em;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 1px 5px;
+      }
+      .cases {
+        display: grid;
+        gap: 12px;
+        margin: 24px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .case {
+        display: block;
+        padding: 16px 18px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--card);
+        color: inherit;
+        text-decoration: none;
+      }
+      .case:hover {
+        border-color: var(--accent);
+      }
+      .case strong {
+        display: block;
+        font-size: 17px;
+      }
+      .case span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .tag {
+        display: inline-block;
+        margin-bottom: 6px;
+        padding: 1px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        border: 1px solid var(--line);
+      }
+      .tag.crash {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      footer {
+        margin-top: 48px;
+        padding-top: 16px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Edge autofill crash: hidden native <code>&lt;select&gt;</code></h1>
+      <p>
+        Minimal reproduction of a renderer crash
+        (<code>STATUS_ACCESS_VIOLATION</code>) in Microsoft Edge 153 on Windows.
+        Using browser address autofill on a form that contains a visually
+        hidden native <code>&lt;select&gt;</code> crashes the tab.
+      </p>
+
+      <h2>Before you start</h2>
+      <p>
+        Edge needs at least one saved address:
+        <code>edge://settings/personalinfo</code>. Open a case below, click the
+        first field, and hover or click an address suggestion.
+      </p>
+
+      <ul class="cases">
+        <li>
+          <a class="case" href="./native.html">
+            <span class="tag crash">Crashes</span>
+            <strong>1. Plain HTML, hidden select</strong>
+            <span
+              >No JavaScript and no libraries. A normal address form plus one
+              visually hidden <code>&lt;select&gt;</code>.</span
+            >
+          </a>
+        </li>
+        <li>
+          <a class="case" href="./native-control.html">
+            <span class="tag">Control</span>
+            <strong>2. Plain HTML, no hidden select</strong>
+            <span>The same form with the hidden select removed.</span>
+          </a>
+        </li>
+        <li>
+          <a class="case" href="./radix.html">
+            <span class="tag crash">Crashes</span>
+            <strong>3. Radix UI Select</strong>
+            <span
+              >React plus <code>@radix-ui/react-select</code>, which renders
+              that hidden <code>&lt;select&gt;</code> itself.</span
+            >
+          </a>
+        </li>
+      </ul>
+
+      <h2>What we see</h2>
+      <ul>
+        <li>Cases 1 and 3 crash the tab, on hover alone in some cases.</li>
+        <li>Case 2 fills the form normally.</li>
+        <li>Chrome 153 is unaffected in all three cases.</li>
+      </ul>
+
+      <footer>
+        Tested with Edge 153.0.4234.32 (64-bit) on Windows. Crash IDs are in
+        <code>edge://crashes</code>.
+      </footer>
+    </main>
+  </body>
+</html>

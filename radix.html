@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="data:," />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Case 3: Radix Select</title>
+    <link rel="stylesheet" href="./form.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Case 3: Radix UI Select</h1>
+      <p>
+        The same address form, with a
+        <code>@radix-ui/react-select</code> dropdown for the country. Radix
+        renders its own visually hidden native <code>&lt;select&gt;</code>
+        inside the form, so this crashes like case 1.
+      </p>
+      <p>
+        Add <code>?no-select=1</code> to the URL to render the form without the
+        Radix dropdown as a control.
+      </p>
+
+      <div id="root"></div>
+
+      <p class="note">
+        React 18 and <code>@radix-ui/react-select</code> 2.0.0, loaded from
+        esm.sh. No build step. <a href="./index.html">All cases</a>
+      </p>
+    </main>
+
+    <script type="module">
+      import React from 'https://esm.sh/react@18.3.1'
+      import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client'
+      import * as Select from 'https://esm.sh/@radix-ui/react-select@2.0.0?deps=react@18.3.1,react-dom@18.3.1'
+
+      const h = React.createElement
+
+      const COUNTRIES = [
+        ['GB', 'United Kingdom'],
+        ['US', 'United States'],
+        ['DE', 'Germany'],
+        ['FR', 'France'],
+        ['ES', 'Spain'],
+        ['IT', 'Italy'],
+        ['NL', 'Netherlands'],
+        ['SE', 'Sweden'],
+        ['SG', 'Singapore'],
+        ['JP', 'Japan'],
+        ['AU', 'Australia'],
+        ['CA', 'Canada'],
+      ]
+
+      const FIELDS = [
+        ['Full name', 'name', 'name'],
+        ['Address line 1', 'address-line1', 'address-line1'],
+        ['Town / city', 'city', 'address-level2'],
+        ['Postcode', 'postcode', 'postal-code'],
+      ]
+
+      function CountrySelect({ value, onValueChange }) {
+        return h(
+          Select.Root,
+          { name: 'country', value, onValueChange },
+          h(
+            Select.Trigger,
+            { className: 'trigger', 'aria-label': 'Country' },
+            h(Select.Value, { placeholder: 'Select a country' }),
+            h(Select.Icon, null, '▾'),
+          ),
+          h(
+            Select.Portal,
+            null,
+            h(
+              Select.Content,
+              { className: 'content', position: 'popper', sideOffset: 4 },
+              h(
+                Select.Viewport,
+                null,
+                COUNTRIES.map(([code, label]) =>
+                  h(
+                    Select.Item,
+                    { key: code, value: code, className: 'item' },
+                    h(Select.ItemText, null, label),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        )
+      }
+
+      function App() {
+        const [country, setCountry] = React.useState('GB')
+        const showSelect =
+          new URLSearchParams(window.location.search).get('no-select') !== '1'
+
+        return h(
+          'form',
+          {
+            method: 'post',
+            action: './index.html',
+            onSubmit: (event) => event.preventDefault(),
+          },
+          FIELDS.map(([label, name, autoComplete]) =>
+            h(
+              'label',
+              { key: name },
+              label,
+              h('input', { name, autoComplete }),
+            ),
+          ),
+          showSelect &&
+            h(
+              'label',
+              { key: 'country', as: 'div' },
+              'Country',
+              h(CountrySelect, { value: country, onValueChange: setCountry }),
+            ),
+          h('button', { type: 'submit' }, 'Save address'),
+        )
+      }
+
+      createRoot(document.getElementById('root')).render(h(App))
+    </script>
+  </body>
+</html>

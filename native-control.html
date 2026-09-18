@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="data:," />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Case 2: Control</title>
+    <link rel="stylesheet" href="./form.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Case 2: plain HTML, no hidden <code>&lt;select&gt;</code></h1>
+      <p>The same form as case 1 with the hidden <code>&lt;select&gt;</code> removed. Autofill fills the fields normally and the tab does not crash.</p>
+
+      <form method="post" action="./index.html">
+        <label>
+          Full name
+          <input name="name" autocomplete="name" />
+        </label>
+
+        <label>
+          Address line 1
+          <input name="address-line1" autocomplete="address-line1" />
+        </label>
+
+        <label>
+          Town / city
+          <input name="city" autocomplete="address-level2" />
+        </label>
+
+        <label>
+          Postcode
+          <input name="postcode" autocomplete="postal-code" />
+        </label>
+
+        <button type="submit">Save address</button>
+      </form>
+
+      <p class="note">Control case for case 1. <a href="./index.html">All cases</a></p>
+    </main>
+  </body>
+</html>

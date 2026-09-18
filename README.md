@@ -40,9 +40,10 @@ repeat.
 
 Radix UI's `Select` renders a visually hidden native `<select>` inside forms to
 support browser autofill (`BubbleSelect` in 2.0.0, `SelectBubbleInput` in
-2.3.x). Any site using that component inside an address form is affected, and
-site authors can't opt out. `native.html` shows the same crash without React or
-Radix, using only the markup and styles Radix produces.
+2.3.x), and site authors can't opt out before 2.3.x. The `native*.html` pages
+reproduce that markup without React or Radix, using only the element and the
+styles Radix produces, so any crash can be attributed to the browser rather
+than to a library.
 
 Edge fills every field in the form from a single suggestion, whatever the
 fields' `autocomplete` or `name` attributes say, so the `<select>` can't be
